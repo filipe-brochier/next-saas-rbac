@@ -1,8 +1,5 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto",
-      "spaces": 2
-    }
-  ]
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true
 }
