@@ -1,9 +1,8 @@
-import 'dotenv/config'
-
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUI from '@fastify/swagger-ui'
+import { env } from '@saas/env'
 import { fastify } from 'fastify'
 import {
   jsonSchemaTransform,
@@ -35,6 +34,15 @@ app.register(fastifySwagger, {
         'Full stack SaaS app with multi-tenant RBAC using Next.js, Fastify, Prisma and Postgres',
       version: '1.0.0',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
@@ -44,7 +52,7 @@ app.register(fastifySwaggerUI, {
 })
 
 app.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET as string,
+  secret: env.JWT_SECRET as string,
 })
 
 app.register(fastifyCors)
@@ -56,6 +64,6 @@ app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
 
-app.listen({ port: Number(process.env.APP_PORT) }).then(() => {
-  console.log(`Server is running on http://localhost:${process.env.APP_PORT}`)
+app.listen({ port: Number(env.SERVER_PORT) }).then(() => {
+  console.log(`Server is running on http://localhost:${env.SERVER_PORT}`)
 })
