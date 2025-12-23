@@ -18,6 +18,11 @@ import { createAccount } from './routes/auth/create-account'
 import { getProfile } from './routes/auth/get-profile'
 import { requestPasswordRecover } from './routes/auth/request-password-recover'
 import { resetPassword } from './routes/auth/reset-password'
+import { createOrganization } from './routes/orgs/create-organization'
+import { getMembership } from './routes/orgs/get-membership'
+import { getOrganization } from './routes/orgs/get-organization'
+import { getOrganizations } from './routes/orgs/get-organizations'
+import { updateOrganization } from './routes/orgs/update-organization'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -63,6 +68,12 @@ app.register(authenticateWithGithub)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
+
+app.register(createOrganization)
+app.register(getOrganizations)
+app.register(getOrganization)
+app.register(getMembership)
+app.register(updateOrganization)
 
 app.listen({ port: Number(env.SERVER_PORT) }).then(() => {
   console.log(`Server is running on http://localhost:${env.SERVER_PORT}`)
