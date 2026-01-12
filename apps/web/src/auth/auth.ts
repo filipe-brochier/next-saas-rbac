@@ -2,6 +2,8 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { getProfile } from '@/http/get-profile'
+import { getMembership } from '@/http/get-membership'
+import { defineAbilityFor } from '@saas/auth'
 
 export async function isAuthenticated() {
   const cookieStore = await cookies()
@@ -26,4 +28,36 @@ export async function auth() {
   } catch { }
 
   redirect('/api/auth/sign-out')
+}
+
+export async function ability() {
+  const membership = await getCurrentMembership()
+
+  if (!membership) {
+    return null
+  }
+
+  const ability = defineAbilityFor({
+    id: membership.userId,
+    role: membership.role,
+  })
+
+  return ability
+}
+
+export async function getCurrentMembership() {
+  const org = await getCurrentOrganization()
+
+  if (!org) return null
+
+  const { membership } = await getMembership(org)
+
+  return membership
+}
+
+export async function getCurrentOrganization() {
+  const cookieStore = await cookies()
+  const currentOrg = cookieStore.get('org')?.value ?? null
+
+  return currentOrg
 }
