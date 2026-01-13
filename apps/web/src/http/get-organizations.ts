@@ -12,7 +12,5 @@ interface GetOrganizationsResponse {
 export async function getOrganizations(): Promise<GetOrganizationsResponse> {
   const result = await api.get('organizations').json<GetOrganizationsResponse>()
 
-  console.log(result)
-
   return result
 }
