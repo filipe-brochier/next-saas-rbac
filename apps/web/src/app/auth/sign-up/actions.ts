@@ -47,8 +47,6 @@ export async function signUpAction(data: FormData) {
       return { success: false, message, errors: null }
     }
 
-    console.error(err)
-
     return {
       success: false,
       message: 'Something went wrong. Please try again later.',
