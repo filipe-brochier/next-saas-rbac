@@ -2,8 +2,11 @@ import { Role } from '@saas/auth'
 
 import { api } from './api-client'
 
-interface GetInvitesResponse {
+interface GetPendingInvitesResponse {
   invites: {
+    organization: {
+      name: string
+    }
     id: string
     role: Role
     email: string
@@ -11,19 +14,15 @@ interface GetInvitesResponse {
     author: {
       id: string
       name: string | null
+      avatarUrl: string | null
     } | null
   }[]
 }
 
-export async function getInvites(org: string) {
+export async function getPendingInvites() {
   const result = await api
-    .get(`organizations/${org}/invites`, {
-      next: {
-        tags: [`${org}/invites`],
-      },
-    })
-    .json<GetInvitesResponse>()
+    .get('pending-invites')
+    .json<GetPendingInvitesResponse>()
 
-  console.log('Invites:', result)
   return result
 }
